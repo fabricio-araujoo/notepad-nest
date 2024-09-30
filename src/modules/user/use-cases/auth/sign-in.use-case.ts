@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../../services/user/user.service';
 import {
   ISignInUseCaseInput,
@@ -19,13 +19,16 @@ export class SignInUseCase {
     const user = await this.userService.find(input.email);
 
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
 
     const compare = await bcrypt.compare(input.password, user.password);
 
     if (!compare) {
-      throw new Error('Email ou senha inválido');
+      throw new HttpException(
+        'Email ou senha inválido',
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     const payload: Partial<UserEntity> = {

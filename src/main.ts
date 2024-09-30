@@ -8,6 +8,13 @@ async function bootstrap() {
 
   app.setGlobalPrefix('v1/notepad');
 
+  // Habilitando CORS
+  app.enableCors({
+    origin: 'http://localhost:4200', // Permitindo apenas o frontend Angular
+    methods: 'GET,POST,PUT,DELETE,OPTIONS', // Métodos permitidos
+    credentials: true, // Se você estiver utilizando cookies
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

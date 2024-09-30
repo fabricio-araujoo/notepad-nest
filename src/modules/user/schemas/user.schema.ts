@@ -17,7 +17,7 @@ export type UserDocument = User & Document;
   },
 })
 export class User extends UserEntity {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop({ required: true })
