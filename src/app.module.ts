@@ -3,8 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { NotesModule } from './modules/notes/notes.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
-import { APP_FILTER } from '@nestjs/core';
-import { ExceptionGlobalFilter } from './core/filters/exception-global/exception-global.filter';
 
 @Module({
   imports: [
@@ -14,11 +12,5 @@ import { ExceptionGlobalFilter } from './core/filters/exception-global/exception
     NotesModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: ExceptionGlobalFilter,
-    },
-  ],
 })
 export class AppModule {}

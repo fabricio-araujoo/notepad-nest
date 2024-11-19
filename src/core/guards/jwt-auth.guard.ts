@@ -29,7 +29,7 @@ export class JwtAuthGuard implements CanActivate {
     } catch (error) {
       console.error(error);
 
-      throw new UnauthorizedException('Invalid token or access denied');
+      throw new UnauthorizedException('Token de acesso inválido');
     }
   }
 }

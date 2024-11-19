@@ -24,20 +24,33 @@ export class ExceptionGlobalFilter implements ExceptionFilter {
 
     const message =
       exception instanceof HttpException
-        ? exception.getResponse()
+        ? this.getReponseString(exception.getResponse())
         : 'Internal server error';
 
     this.logger.error(
-      `HTTP Status: ${status} Error Message: ${message}`,
-      exception instanceof Error ? exception.stack : null,
-      `${request.method} ${request.url}`
+      `${request.method} - ${request.url}`,
+      `HTTP Status: ${status}`,
+      `Error Message: ${message}`,
+      `Timestamp: ${new Date().toISOString()}`,
+      `${exception instanceof Error ? exception.stack : null}`
     );
 
     response.status(status).json({
-      statusCode: status,
-      message,
-      path: request.url,
-      timestamp: new Date().toISOString(),
+      code: status,
+      error: message,
+      result: null,
     });
+  }
+
+  private getReponseString(exception: string | object) {
+    if (typeof exception === 'object') {
+      const _exception = exception as { message: string | string[] };
+
+      return Array.isArray(_exception.message)
+        ? _exception.message[0]
+        : _exception.message;
+    }
+
+    return exception;
   }
 }
