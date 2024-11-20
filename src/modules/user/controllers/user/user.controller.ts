@@ -1,15 +1,15 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
 import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
-import { UserEntity } from '../../entities/user.entity';
+import { AuthenticatedRequest } from 'src/core/interfaces/auth-request.interface';
+import { GetCurrentUseCase } from '../../use-cases/user/get-current.use-case';
 
 @Controller('user')
 export class UserController {
+  constructor(private getCurrentUseCase: GetCurrentUseCase) {}
+
   @UseGuards(JwtAuthGuard)
   @Get('get-current')
-  async getCurrent(@Req() request: Request & { user: UserEntity }) {
-    console.log({ request: request.user });
-
-    return { teste: 'teste' };
+  async getCurrent(@Req() request: AuthenticatedRequest) {
+    return this.getCurrentUseCase.execute({ ...request });
   }
 }
