@@ -8,6 +8,7 @@ export type UserDocument = User & Document;
 @Schema({
   collection: ECollections.USUARIOS,
   versionKey: false,
+  timestamps: true,
   toJSON: {
     transform: (doc, ret) => {
       delete ret.password;

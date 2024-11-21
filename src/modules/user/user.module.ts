@@ -7,17 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { UserController } from './controllers/user/user.controller';
 import { SignInUseCase } from './use-cases/auth/sign-in.use-case';
-import { JwtModule } from '@nestjs/jwt';
 import { GetCurrentUseCase } from './use-cases/user/get-current.use-case';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '3600s' },
-    }),
   ],
   controllers: [AuthController, UserController],
   providers: [

@@ -34,8 +34,6 @@ export class SignInUseCase {
     const payload: Partial<UserEntity> = {
       _id: user._id,
       email: user.email,
-      name: user.name,
-      dateOfBirth: user.dateOfBirth,
     };
 
     return {

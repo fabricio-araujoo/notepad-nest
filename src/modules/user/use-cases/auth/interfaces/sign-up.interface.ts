@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export type ISignUpUseCaseInput = {
   email: string;
@@ -8,7 +8,7 @@ export type ISignUpUseCaseInput = {
 };
 
 export type ISignUpUseCaseOutput = {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   email: string;
   name: string;
   dateOfBirth: Date;
