@@ -1,4 +1,4 @@
-import { IsDateString, IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 export class SignUpDto {
   @IsEmail()
@@ -9,7 +9,4 @@ export class SignUpDto {
 
   @IsString()
   name: string;
-
-  @IsDateString()
-  dateOfBirth: Date;
 }

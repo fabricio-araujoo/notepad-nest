@@ -27,8 +27,8 @@ export class User extends UserEntity {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
-  dateOfBirth: Date;
+  @Prop()
+  lastLogin: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

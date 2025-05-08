@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
-import { ResultInterceptor } from './core/interceptors/result/result.interceptor';
+import { AppModule } from './app.module';
 import { ExceptionGlobalFilter } from './core/filters/exception-global/exception-global.filter';
+import { ResultInterceptor } from './core/interceptors/result/result.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,8 +12,8 @@ async function bootstrap() {
 
   // Habilitando CORS
   app.enableCors({
-    origin: 'http://localhost:4200', // Permitindo apenas o frontend Angular
-    methods: 'GET,POST,PUT,DELETE,OPTIONS', // Métodos permitidos
+    origin: process.env.FRONTEND_URL, // Permitindo apenas o frontend Angular
+    methods: 'GET, POST, PUT, DELETE, OPTIONS', // Métodos permitidos
     credentials: true, // Se você estiver utilizando cookies
   });
 

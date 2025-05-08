@@ -13,4 +13,8 @@ export class UserService {
   async create(user: UserEntity): Promise<UserEntity> {
     return this.userRepository.create(user);
   }
+
+  async update(user: UserEntity): Promise<UserEntity> {
+    return this.userRepository.update(user);
+  }
 }

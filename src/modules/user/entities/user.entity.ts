@@ -6,6 +6,6 @@ export class UserEntity {
     public email: string,
     public password: string,
     public name: string,
-    public dateOfBirth: Date
+    public lastLogin: Date = new Date()
   ) {}
 }

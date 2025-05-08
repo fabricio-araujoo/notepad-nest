@@ -9,6 +9,6 @@ export type IGetCurrentUseCaseOutput = {
     id: string;
     name: string;
     email: string;
-    dateOfBirth: string;
+    lastLogin?: Date;
   };
 };

@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
+import { UserEntity } from '../../entities/user.entity';
 import { UserService } from '../../services/user/user.service';
 import {
   ISignInUseCaseInput,
   ISignInUseCaseOutput,
 } from './interfaces/sign-in.interface';
-import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from '../../entities/user.entity';
 
 @Injectable()
 export class SignInUseCase {
@@ -16,13 +16,13 @@ export class SignInUseCase {
   ) {}
 
   async execute(input: ISignInUseCaseInput): Promise<ISignInUseCaseOutput> {
-    const user = await this.userService.find(input.email);
+    const doc = await this.userService.find(input.email);
 
-    if (!user) {
+    if (!doc) {
       throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    const compare = await bcrypt.compare(input.password, user.password);
+    const compare = await bcrypt.compare(input.password, doc.password);
 
     if (!compare) {
       throw new HttpException(
@@ -30,6 +30,8 @@ export class SignInUseCase {
         HttpStatus.BAD_REQUEST
       );
     }
+
+    const user = new UserEntity(doc._id, doc.email, doc.password, doc.name);
 
     const payload: Partial<UserEntity> = {
       _id: user._id,

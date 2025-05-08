@@ -1,45 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { UserEntity } from '../../entities/user.entity';
+import { UserService } from '../../services/user/user.service';
 import {
   IGetCurrentUseCaseInput,
   IGetCurrentUseCaseOutput,
 } from './interfaces/get-current.interface';
-import { UserService } from '../../services/user/user.service';
-import { UserEntity } from '../../entities/user.entity';
-import { DateService } from 'src/core/adapter/date/date.service';
-import { EDateFormat } from 'src/core/enums/date';
 
 @Injectable()
 export class GetCurrentUseCase {
-  constructor(
-    private userService: UserService,
-    private dateService: DateService
-  ) {}
+  constructor(private userService: UserService) {}
 
   async execute(
     input: IGetCurrentUseCaseInput
   ): Promise<IGetCurrentUseCaseOutput> {
-    const _user = await this.userService.find(input.user.email);
+    try {
+      const doc = await this.userService.find(input.user.email);
 
-    const user = new UserEntity(
-      _user._id,
-      _user.email,
-      _user.password,
-      _user.name,
-      _user.dateOfBirth
-    );
+      const user = new UserEntity(doc._id, doc.email, doc.password, doc.name);
 
-    const profile: IGetCurrentUseCaseOutput['profile'] = {
-      id: String(user._id),
-      dateOfBirth: this.dateService.formatISODate(
-        user.dateOfBirth.toISOString(),
-        EDateFormat.DATE
-      ),
-      email: user.email,
-      name: user.name,
-    };
+      await this.userService.update(user);
 
-    return {
-      profile,
-    };
+      const profile: IGetCurrentUseCaseOutput['profile'] = {
+        id: String(user._id),
+        email: user.email,
+        name: user.name,
+        lastLogin: doc.lastLogin,
+      };
+
+      return {
+        profile,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }

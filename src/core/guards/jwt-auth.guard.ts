@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
     const token = request.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException('Invalid token or access denied');
+      throw new UnauthorizedException('Token de acesso inválido');
     }
 
     try {
